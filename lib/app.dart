@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login/features/login/login.dart';
 import 'package:flutter_login/features/login/presentation/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:flutter_login/features/login/presentation/pages/splash_page.dart';
 import 'package:flutter_login/home/home.dart';
-import 'package:flutter_login/splash/splash.dart';
 import 'package:user_repository/user_repository.dart';
 
 class App extends StatefulWidget {
