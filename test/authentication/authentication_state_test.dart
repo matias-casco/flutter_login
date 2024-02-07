@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:flutter_login/features/login/presentation/bloc/authentication_bloc/authentication.dart';
+import 'package:flutter_login/features/login/presentation/bloc/bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:user_repository/user_repository.dart';
