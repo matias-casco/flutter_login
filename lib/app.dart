@@ -1,8 +1,10 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_login/features/login/data/datasource/user_datasource.dart';
+import 'package:flutter_login/features/login/data/repositories/user_repository_impl.dart';
+import 'package:flutter_login/features/login/domain/repositories/usecases/get_user_usecase.dart';
 import 'package:flutter_login/features/login/login.dart';
-import 'package:user_repository/user_repository.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -12,14 +14,18 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  late final UserDataSourceImpl userDatasource;
+  late final UserRepositoryImpl userRepository;
   late final AuthenticationRepository _authenticationRepository;
-  late final UserRepository _userRepository;
+  late final GetUserUseCase _getUserUseCase;
 
   @override
   void initState() {
     super.initState();
+    userDatasource = UserDataSourceImpl();
+    userRepository = UserRepositoryImpl(userDatasource);
     _authenticationRepository = AuthenticationRepository();
-    _userRepository = UserRepository();
+    _getUserUseCase = GetUserUseCase(repository: userRepository);
   }
 
   @override
@@ -35,7 +41,7 @@ class _AppState extends State<App> {
       child: BlocProvider(
         create: (_) => AuthenticationBloc(
           authenticationRepository: _authenticationRepository,
-          userRepository: _userRepository,
+          getUserUseCase: _getUserUseCase,
         ),
         child: const AppView(),
       ),

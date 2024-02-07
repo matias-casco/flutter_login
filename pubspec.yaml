@@ -10,14 +10,17 @@ dependencies:
   authentication_repository:
     path: packages/authentication_repository
   bloc: ^8.1.0
+  dartz: ^0.10.1
   equatable: ^2.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
   formz: ^0.6.0
+  get_it: ^7.6.4
   user_repository:
     path: packages/user_repository
-
+  uuid: ^3.0.0
+  
 dependency_overrides:
   bloc:
     path: ../../packages/bloc
