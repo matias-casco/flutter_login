@@ -1,7 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_login/features/login/data/models/models.dart';
+import 'package:flutter_login/features/login/presentation/validations/validations.dart';
 import 'package:formz/formz.dart';
 
 part 'login_event.dart';

@@ -12,10 +12,10 @@ class UserDataSourceImpl implements UserDatasource {
 
   @override
   Future<User> getUser() async {
-    if (_user != null) return const User(id: '-');
+    if (_user != null) return const User('', '', id: '-');
     return Future.delayed(
       const Duration(milliseconds: 300),
-      () => _user = User(id: const Uuid().v4()),
+      () => _user = User('', '', id: const Uuid().v4()),
     );
   }
 }

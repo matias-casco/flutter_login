@@ -5,7 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_login/features/login/data/models/models.dart';
 import 'package:flutter_login/features/login/domain/entities/user_entity.dart';
-import 'package:flutter_login/features/login/domain/repositories/usecases/get_user_usecase.dart';
+import 'package:flutter_login/features/login/domain/usecases/get_status_usecase.dart';
+import 'package:flutter_login/features/login/domain/usecases/get_user_usecase.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -14,6 +15,7 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc({
     required AuthenticationRepository authenticationRepository,
+    required this.getStatusUsecase,
     required this.getUserUseCase,
   })  : _authenticationRepository = authenticationRepository,
         super(const AuthenticationState.unknown()) {
@@ -25,6 +27,7 @@ class AuthenticationBloc
   }
 
   final AuthenticationRepository _authenticationRepository;
+  final GetStatusUsecase getStatusUsecase;
   final GetUserUseCase getUserUseCase;
   //final UserRepository _userRepository;
   late StreamSubscription<AuthenticationStatus>
