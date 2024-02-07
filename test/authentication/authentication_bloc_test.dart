@@ -1,9 +1,10 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_login/features/login/data/models/user.dart';
+import 'package:flutter_login/features/login/domain/repositories/user_repository.dart';
 import 'package:flutter_login/features/login/presentation/bloc/bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:user_repository/user_repository.dart';
 
 class _MockAuthenticationRepository extends Mock
     implements AuthenticationRepository {}
@@ -11,7 +12,7 @@ class _MockAuthenticationRepository extends Mock
 class _MockUserRepository extends Mock implements UserRepository {}
 
 void main() {
-  const user = User('id');
+  const user = User(id: 'id');
   late AuthenticationRepository authenticationRepository;
   late UserRepository userRepository;
 
