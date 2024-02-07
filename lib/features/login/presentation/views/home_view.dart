@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login/features/login/presentation/bloc/authentication_bloc/authentication_bloc.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const HomePage());
-  }
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
