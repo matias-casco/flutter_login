@@ -25,7 +25,9 @@ class HomeView extends StatelessWidget {
             ElevatedButton(
               child: const Text('Logout'),
               onPressed: () {
-                sl<AuthenticationBloc>().add(AuthenticationLogoutRequested());
+                context
+                    .read<AuthenticationBloc>()
+                    .add(AuthenticationLogoutRequested());
               },
             ),
           ],

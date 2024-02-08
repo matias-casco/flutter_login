@@ -24,12 +24,11 @@ class AuthenticationBloc
     getStatusUsecase(NoParams()).then((either) {
       either.fold((failure) {
         // manejar el error
-        print('error no manejado');
       }, (stream) {
         _authenticationStatusSubscription = stream.listen(
           (status) => add(_AuthenticationStatusChanged(status)),
         );
-        print('suscrito');
+        print('auth bloc generado');
       });
     });
   }
@@ -43,7 +42,6 @@ class AuthenticationBloc
 
   @override
   Future<void> close() {
-    print('suscripcion cerrada');
     _authenticationStatusSubscription.cancel();
     return super.close();
   }
@@ -52,7 +50,6 @@ class AuthenticationBloc
     _AuthenticationStatusChanged event,
     Emitter<AuthenticationState> emit,
   ) async {
-    print(event.status);
     switch (event.status) {
       case AuthenticationStatus.unauthenticated:
         return emit(const AuthenticationState.unauthenticated());
@@ -76,7 +73,6 @@ class AuthenticationBloc
   }
 
   Future<bool> onDisposeAuth() async {
-    print('disposed');
     final disposal = await disposeAuthUseCase(NoParams());
 
     disposal.fold((error) {

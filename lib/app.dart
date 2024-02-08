@@ -29,32 +29,18 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    return MultiBlocProvider(
       providers: [
-        RepositoryProvider.value(
-          value: AuthenticationRepositoryImpl(
-            sl(),
-          ),
+        BlocProvider(
+          create: (_) => sl<AuthenticationBloc>(),
+          lazy: false,
         ),
-        RepositoryProvider.value(
-          value: UserRepositoryImpl(
-            UserDataSourceImpl(),
-          ),
+        BlocProvider(
+          create: (_) => sl<LoginBloc>(),
         ),
+        // Agrega más BlocProvider si es necesario
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => sl<AuthenticationBloc>(),
-            lazy: false,
-          ),
-          BlocProvider(
-            create: (_) => sl<LoginBloc>(),
-          ),
-          // Agrega más BlocProvider si es necesario
-        ],
-        child: const AppView(),
-      ),
+      child: const AppView(),
     );
   }
 }

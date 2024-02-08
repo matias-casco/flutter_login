@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter_login/features/login/data/datasource/datasources.dart';
 import 'package:flutter_login/features/login/data/repositories/authentication_repository_impl.dart';
 import 'package:flutter_login/features/login/data/repositories/user_repository_impl.dart';
+import 'package:flutter_login/features/login/domain/repositories/authentication_repository.dart';
+import 'package:flutter_login/features/login/domain/repositories/user_repository.dart';
 import 'package:flutter_login/features/login/domain/usecases/dispose_auth_usecase.dart';
 import 'package:flutter_login/features/login/domain/usecases/get_status_usecase.dart';
 import 'package:flutter_login/features/login/domain/usecases/get_user_usecase.dart';
@@ -17,42 +19,37 @@ final GetIt sl = GetIt.instance;
 Future<void> init(String env) async {
   //Datasources
   sl
-    ..registerSingleton<UserDatasource>(
-      UserDataSourceImpl(),
+    ..registerLazySingleton<UserDatasource>(
+      () => UserDataSourceImpl(),
     )
-    ..registerSingleton<AuthenticationDatasource>(
-      AuthenticationDatasourceImpl(),
+    ..registerLazySingleton<AuthenticationDatasource>(
+      () => AuthenticationDatasourceImpl(),
     )
 
     //repositories
-    ..registerSingleton<AuthenticationRepositoryImpl>(
-      AuthenticationRepositoryImpl(sl()),
+    ..registerLazySingleton<AuthenticationRepository>(
+      () => AuthenticationRepositoryImpl(sl()),
     )
-    ..registerSingleton<UserRepositoryImpl>(
-      UserRepositoryImpl(sl()),
+    ..registerLazySingleton<UserRepository>(
+      () => UserRepositoryImpl(sl()),
     )
 
     //usescases
-    ..registerSingleton(GetStatusUseCase(repository: sl()))
-    ..registerSingleton(DisposeAuthUseCase(repository: sl()))
-    ..registerSingleton(GetUserUseCase(repository: sl()))
-    ..registerSingleton(LoginUseCase(repository: sl()))
-    ..registerSingleton(LogoutUseCase(repository: sl()))
+    ..registerLazySingleton<GetStatusUseCase>(
+      () => GetStatusUseCase(repository: sl()),
+    )
+    ..registerLazySingleton<DisposeAuthUseCase>(
+      () => DisposeAuthUseCase(repository: sl()),
+    )
+    ..registerLazySingleton<GetUserUseCase>(
+      () => GetUserUseCase(repository: sl()),
+    )
+    ..registerLazySingleton<LoginUseCase>(() => LoginUseCase(repository: sl()))
+    ..registerLazySingleton<LogoutUseCase>(
+      () => LogoutUseCase(repository: sl()),
+    )
 
     //blocs
-    ..registerLazySingleton(
-      () => AuthenticationBloc(
-        logoutUsecase: sl(),
-        getStatusUsecase: sl(),
-        getUserUsecase: sl(),
-        disposeAuthUseCase: sl(),
-      ),
-    )
-    ..registerLazySingleton(
-      () => LoginBloc(loginUsecase: sl()),
-    );
-
-  /*
     ..registerFactory<AuthenticationBloc>(
       () => AuthenticationBloc(
         logoutUsecase: sl(),
@@ -64,5 +61,4 @@ Future<void> init(String env) async {
     ..registerFactory<LoginBloc>(
       () => LoginBloc(loginUsecase: sl()),
     );
-    */
 }
