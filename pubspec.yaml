@@ -7,8 +7,6 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  authentication_repository:
-    path: packages/authentication_repository
   bloc: ^8.1.0
   dartz: ^0.10.1
   equatable: ^2.0.3

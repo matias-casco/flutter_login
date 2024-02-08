@@ -1,60 +1,47 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/features/login/data/datasource/authentication_datasource.dart';
-import 'package:flutter_login/features/login/data/datasource/user_datasource.dart';
+import 'package:flutter_login/features/login/data/datasource/datasources.dart';
 import 'package:flutter_login/features/login/data/repositories/authentication_repository_impl.dart';
 import 'package:flutter_login/features/login/data/repositories/user_repository_impl.dart';
-import 'package:flutter_login/features/login/domain/usecases/get_status_usecase.dart';
-import 'package:flutter_login/features/login/domain/usecases/get_user_usecase.dart';
+import 'package:flutter_login/features/login/domain/authentication_status.dart';
+import 'package:flutter_login/features/login/domain/usecases/usecases.dart';
+import 'package:flutter_login/features/login/injector.dart';
 import 'package:flutter_login/features/login/login.dart';
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({super.key});
 
   @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  late final UserDataSourceImpl userDatasource;
-  late final AuthenticationDatasourceImpl authenticationDatasource;
-  late final UserRepositoryImpl userRepository;
-  late final AuthenticationRepository _authenticationRepository;
-  late final AuthenticationRepositoryImpl _authenticationRepositoryImpl;
-  late final GetUserUseCase _getUserUseCase;
-  late final GetStatusUsecase _getStatusUsecase;
-
-  @override
-  void initState() {
-    super.initState();
-    userDatasource = UserDataSourceImpl();
-    authenticationDatasource = AuthenticationDatasourceImpl();
-    userRepository = UserRepositoryImpl(userDatasource);
-    _authenticationRepository = AuthenticationRepository();
-    _authenticationRepositoryImpl =
-        AuthenticationRepositoryImpl(authenticationDatasource);
-    _getUserUseCase = GetUserUseCase(repository: userRepository);
-    _getStatusUsecase =
-        GetStatusUsecase(repository: _authenticationRepositoryImpl);
-  }
-
-  @override
-  void dispose() {
-    _authenticationRepository.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _authenticationRepository,
-      child: BlocProvider(
-        create: (_) => AuthenticationBloc(
-          authenticationRepository: _authenticationRepository,
-          getUserUseCase: _getUserUseCase,
-          getStatusUsecase: _getStatusUsecase,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(
+          value: AuthenticationRepositoryImpl(
+            sl(),
+          ),
         ),
+        RepositoryProvider.value(
+          value: UserRepositoryImpl(
+            UserDataSourceImpl(),
+          ),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AuthenticationBloc(
+              logoutUsecase: LogoutUseCase(repository: sl()),
+              getUserUsecase: GetUserUseCase(repository: sl()),
+              getStatusUsecase: GetStatusUseCase(repository: sl()),
+            ),
+            lazy: false,
+          ),
+          BlocProvider(
+            create: (_) =>
+                LoginBloc(loginUsecase: LoginUseCase(repository: sl())),
+          ),
+          // Agrega más BlocProvider si es necesario
+        ],
         child: const AppView(),
       ),
     );

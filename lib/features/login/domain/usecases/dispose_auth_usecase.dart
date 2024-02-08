@@ -3,8 +3,8 @@ import 'package:flutter_login/core/errors/failures.dart';
 import 'package:flutter_login/core/usecases/usecase.dart';
 import 'package:flutter_login/features/login/data/repositories/authentication_repository_impl.dart';
 
-class DisposeAuthUsecase extends UseCase<void, NoParams> {
-  DisposeAuthUsecase({required this.repository});
+class DisposeAuthUseCase extends UseCase<void, NoParams> {
+  DisposeAuthUseCase({required this.repository});
 
   final AuthenticationRepositoryImpl repository;
 

@@ -1,7 +1,7 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/features/login/presentation/bloc/login_bloc/login_bloc.dart';
+import 'package:flutter_login/features/login/injector.dart';
+import 'package:flutter_login/features/login/presentation/bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
 class LoginView extends StatelessWidget {
@@ -12,13 +12,8 @@ class LoginView extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12),
-        child: BlocProvider(
-          create: (context) {
-            return LoginBloc(
-              authenticationRepository:
-                  RepositoryProvider.of<AuthenticationRepository>(context),
-            );
-          },
+        child: BlocProvider<LoginBloc>(
+          create: (_) => sl<LoginBloc>(),
           child: const LoginForm(),
         ),
       ),

@@ -4,8 +4,8 @@ import 'package:flutter_login/core/usecases/usecase.dart';
 import 'package:flutter_login/features/login/data/models/models.dart';
 import 'package:flutter_login/features/login/data/repositories/authentication_repository_impl.dart';
 
-class LoginUsecase extends UseCase<Future<void>, User> {
-  LoginUsecase({required this.repository});
+class LoginUseCase extends UseCase<Future<void>, User> {
+  LoginUseCase({required this.repository});
 
   final AuthenticationRepositoryImpl repository;
 

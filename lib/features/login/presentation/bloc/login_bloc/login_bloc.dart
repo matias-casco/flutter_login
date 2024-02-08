@@ -1,6 +1,7 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_login/features/login/data/models/models.dart';
+import 'package:flutter_login/features/login/domain/usecases/login_usecase.dart';
 import 'package:flutter_login/features/login/presentation/validations/validations.dart';
 import 'package:formz/formz.dart';
 
@@ -9,15 +10,14 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
-    required AuthenticationRepository authenticationRepository,
-  })  : _authenticationRepository = authenticationRepository,
-        super(const LoginState()) {
+    required this.loginUsecase,
+  }) : super(const LoginState()) {
     on<LoginUsernameChanged>(_onUsernameChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
   }
 
-  final AuthenticationRepository _authenticationRepository;
+  final LoginUseCase loginUsecase;
 
   void _onUsernameChanged(
     LoginUsernameChanged event,
@@ -51,15 +51,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     if (state.isValid) {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-      try {
-        await _authenticationRepository.logIn(
+
+      final loginResult = await loginUsecase(
+        User(
           username: state.username.value,
           password: state.password.value,
-        );
-        emit(state.copyWith(status: FormzSubmissionStatus.success));
-      } catch (_) {
+          id: '',
+        ),
+      );
+
+      loginResult.fold((error) {
         emit(state.copyWith(status: FormzSubmissionStatus.failure));
-      }
+      }, (success) {
+        emit(state.copyWith(status: FormzSubmissionStatus.success));
+      });
     }
   }
 }
