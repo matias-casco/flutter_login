@@ -51,4 +51,18 @@ Future<void> init(String env) async {
     ..registerLazySingleton(
       () => LoginBloc(loginUsecase: sl()),
     );
+
+  /*
+    ..registerFactory<AuthenticationBloc>(
+      () => AuthenticationBloc(
+        logoutUsecase: sl(),
+        getStatusUsecase: sl(),
+        getUserUsecase: sl(),
+        disposeAuthUseCase: sl(),
+      ),
+    )
+    ..registerFactory<LoginBloc>(
+      () => LoginBloc(loginUsecase: sl()),
+    );
+    */
 }

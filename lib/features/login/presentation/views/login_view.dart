@@ -9,6 +9,7 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    sl<LoginBloc>().add(LogoutEvent());
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12),
