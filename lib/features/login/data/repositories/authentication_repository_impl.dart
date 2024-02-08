@@ -71,7 +71,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } catch (e) {
       return Left(
         ServerFailure(
-          message: 'Error logging out.',
+          message: 'Error dispossing.',
           code: 500,
           status: 500,
         ),

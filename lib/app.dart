@@ -4,12 +4,28 @@ import 'package:flutter_login/features/login/data/datasource/datasources.dart';
 import 'package:flutter_login/features/login/data/repositories/authentication_repository_impl.dart';
 import 'package:flutter_login/features/login/data/repositories/user_repository_impl.dart';
 import 'package:flutter_login/features/login/domain/authentication_status.dart';
-import 'package:flutter_login/features/login/domain/usecases/usecases.dart';
 import 'package:flutter_login/features/login/injector.dart';
 import 'package:flutter_login/features/login/login.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    sl<AuthenticationBloc>().onDisposeAuth();
+    print('disposed desde app');
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +45,11 @@ class App extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => AuthenticationBloc(
-              logoutUsecase: LogoutUseCase(repository: sl()),
-              getUserUsecase: GetUserUseCase(repository: sl()),
-              getStatusUsecase: GetStatusUseCase(repository: sl()),
-            ),
+            create: (_) => sl<AuthenticationBloc>(),
             lazy: false,
           ),
           BlocProvider(
-            create: (_) =>
-                LoginBloc(loginUsecase: LoginUseCase(repository: sl())),
+            create: (_) => sl<LoginBloc>(),
           ),
           // Agrega más BlocProvider si es necesario
         ],
@@ -69,14 +80,14 @@ class _AppViewState extends State<AppView> {
           listener: (context, state) {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
-                _navigator.pushAndRemoveUntil<void>(
+                _navigator.push<void>(
                   HomePage.route(),
-                  (route) => false,
+                  // (route) => false,
                 );
               case AuthenticationStatus.unauthenticated:
-                _navigator.pushAndRemoveUntil<void>(
+                _navigator.push<void>(
                   LoginPage.route(),
-                  (route) => false,
+                  //  (route) => false,
                 );
               case AuthenticationStatus.unknown:
                 break;

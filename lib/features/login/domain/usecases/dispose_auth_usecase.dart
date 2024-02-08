@@ -9,7 +9,7 @@ class DisposeAuthUseCase extends UseCase<void, NoParams> {
   final AuthenticationRepositoryImpl repository;
 
   @override
-  Future<Either<Failure, void>> call(NoParams) async {
+  Future<Either<Failure, void>> call(NoParams params) async {
     final result = repository.dispose();
     return result;
   }

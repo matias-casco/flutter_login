@@ -32,13 +32,20 @@ class AuthenticationDatasourceImpl implements AuthenticationDatasource {
   }) async {
     await Future.delayed(
       const Duration(milliseconds: 300),
-      () => _controller.add(AuthenticationStatus.authenticated),
+      () {
+        // Verificar si el controlador ha sido cerrado antes de enviar un evento
+        if (!_controller.isClosed) {
+          _controller.add(AuthenticationStatus.authenticated);
+        }
+      },
     );
   }
 
   @override
   void logOut() {
-    _controller.add(AuthenticationStatus.unauthenticated);
+    if (!_controller.isClosed) {
+      _controller.add(AuthenticationStatus.unauthenticated);
+    }
   }
 
   @override

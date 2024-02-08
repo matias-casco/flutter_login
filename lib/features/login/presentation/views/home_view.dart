@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_login/features/login/injector.dart';
 import 'package:flutter_login/features/login/presentation/bloc/authentication_bloc/authentication_bloc.dart';
 
 class HomeView extends StatelessWidget {
@@ -23,9 +24,7 @@ class HomeView extends StatelessWidget {
             ElevatedButton(
               child: const Text('Logout'),
               onPressed: () {
-                context
-                    .read<AuthenticationBloc>()
-                    .add(AuthenticationLogoutRequested());
+                sl<AuthenticationBloc>().add(AuthenticationLogoutRequested());
               },
             ),
           ],

@@ -45,6 +45,7 @@ Future<void> init(String env) async {
         logoutUsecase: sl(),
         getStatusUsecase: sl(),
         getUserUsecase: sl(),
+        disposeAuthUseCase: sl(),
       ),
     )
     ..registerLazySingleton(

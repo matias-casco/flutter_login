@@ -6,9 +6,7 @@ import 'package:flutter_login/core/usecases/usecase.dart';
 import 'package:flutter_login/features/login/data/models/models.dart';
 import 'package:flutter_login/features/login/domain/authentication_status.dart';
 import 'package:flutter_login/features/login/domain/entities/user_entity.dart';
-import 'package:flutter_login/features/login/domain/usecases/get_status_usecase.dart';
-import 'package:flutter_login/features/login/domain/usecases/get_user_usecase.dart';
-import 'package:flutter_login/features/login/domain/usecases/logout_usecase.dart';
+import 'package:flutter_login/features/login/domain/usecases/usecases.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -19,6 +17,7 @@ class AuthenticationBloc
     required this.logoutUsecase,
     required this.getStatusUsecase,
     required this.getUserUsecase,
+    required this.disposeAuthUseCase,
   }) : super(const AuthenticationState.unknown()) {
     on<_AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
     on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
@@ -30,6 +29,7 @@ class AuthenticationBloc
         _authenticationStatusSubscription = stream.listen(
           (status) => add(_AuthenticationStatusChanged(status)),
         );
+        print('suscrito');
       });
     });
   }
@@ -37,11 +37,13 @@ class AuthenticationBloc
   final GetStatusUseCase getStatusUsecase;
   final GetUserUseCase getUserUsecase;
   final LogoutUseCase logoutUsecase;
+  final DisposeAuthUseCase disposeAuthUseCase;
   late StreamSubscription<AuthenticationStatus>
       _authenticationStatusSubscription;
 
   @override
   Future<void> close() {
+    print('suscripcion cerrada');
     _authenticationStatusSubscription.cancel();
     return super.close();
   }
@@ -70,5 +72,18 @@ class AuthenticationBloc
     Emitter<AuthenticationState> emit,
   ) {
     logoutUsecase(NoParams());
+  }
+
+  Future<bool> onDisposeAuth() async {
+    print('disposed');
+    final disposal = await disposeAuthUseCase(NoParams());
+
+    disposal.fold((error) {
+      return false;
+    }, (success) {
+      return true;
+    });
+
+    return false;
   }
 }
