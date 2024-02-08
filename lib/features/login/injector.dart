@@ -25,6 +25,7 @@ Future<void> init(String env) async {
     ..registerLazySingleton<AuthenticationDatasource>(
       () => AuthenticationDatasourceImpl(),
     )
+
     //repositories
     ..registerLazySingleton<AuthenticationRepository>(
       () => AuthenticationRepositoryImpl(sl()),
@@ -49,19 +50,6 @@ Future<void> init(String env) async {
     )
 
     //blocs
-    ..registerLazySingleton(
-      () => AuthenticationBloc(
-        logoutUsecase: sl(),
-        getStatusUsecase: sl(),
-        getUserUsecase: sl(),
-        disposeAuthUseCase: sl(),
-      ),
-    )
-    ..registerLazySingleton(
-      () => LoginBloc(loginUsecase: sl()),
-    );
-
-  /*
     ..registerFactory<AuthenticationBloc>(
       () => AuthenticationBloc(
         logoutUsecase: sl(),
@@ -69,5 +57,8 @@ Future<void> init(String env) async {
         getUserUsecase: sl(),
         disposeAuthUseCase: sl(),
       ),
+    )
+    ..registerFactory<LoginBloc>(
+      () => LoginBloc(loginUsecase: sl()),
     );
 }

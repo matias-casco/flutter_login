@@ -22,8 +22,6 @@ class _AppState extends State<App> {
 
   @override
   void dispose() {
-    sl<AuthenticationBloc>().onDisposeAuth();
-    //print('disposed desde app');
     super.dispose();
   }
 
