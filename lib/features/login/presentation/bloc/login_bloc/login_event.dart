@@ -28,7 +28,3 @@ final class LoginPasswordChanged extends LoginEvent {
 final class LoginSubmitted extends LoginEvent {
   const LoginSubmitted();
 }
-
-final class LogoutEvent extends LoginEvent {
-  const LogoutEvent();
-}

@@ -34,17 +34,35 @@ Future<void> init(String env) async {
     )
 
     //usescases
-    ..registerLazySingleton(() => GetStatusUseCase(repository: sl()))
-    ..registerLazySingleton(() => DisposeAuthUseCase(repository: sl()))
-    ..registerLazySingleton(() => GetUserUseCase(repository: sl()))
-    ..registerLazySingleton(() => LoginUseCase(repository: sl()))
-    ..registerLazySingleton(() => LogoutUseCase(repository: sl()))
+    ..registerLazySingleton<GetStatusUseCase>(
+      () => GetStatusUseCase(repository: sl()),
+    )
+    ..registerLazySingleton<DisposeAuthUseCase>(
+      () => DisposeAuthUseCase(repository: sl()),
+    )
+    ..registerLazySingleton<GetUserUseCase>(
+      () => GetUserUseCase(repository: sl()),
+    )
+    ..registerLazySingleton<LoginUseCase>(() => LoginUseCase(repository: sl()))
+    ..registerLazySingleton<LogoutUseCase>(
+      () => LogoutUseCase(repository: sl()),
+    )
 
     //blocs
-    ..registerFactory(
-      () => LoginBloc(loginUsecase: sl()),
+    ..registerLazySingleton(
+      () => AuthenticationBloc(
+        logoutUsecase: sl(),
+        getStatusUsecase: sl(),
+        getUserUsecase: sl(),
+        disposeAuthUseCase: sl(),
+      ),
     )
-    ..registerFactory(
+    ..registerLazySingleton(
+      () => LoginBloc(loginUsecase: sl()),
+    );
+
+  /*
+    ..registerFactory<AuthenticationBloc>(
       () => AuthenticationBloc(
         logoutUsecase: sl(),
         getStatusUsecase: sl(),

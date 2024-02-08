@@ -9,11 +9,10 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    sl<LoginBloc>().add(const LogoutEvent());
-    return const Scaffold(
+    return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(12),
-        child: LoginForm(),
+        padding: const EdgeInsets.all(12),
+        child: const LoginForm(),
       ),
     );
   }
@@ -48,8 +47,9 @@ class _UsernameInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
-          onChanged: (username) =>
-              context.read<LoginBloc>().add(LoginUsernameChanged(username)),
+          onChanged: (username) {
+            context.read<LoginBloc>().add(LoginUsernameChanged(username));
+          },
           decoration: InputDecoration(
             labelText: 'username',
             errorText:

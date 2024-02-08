@@ -15,9 +15,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginUsernameChanged>(_onUsernameChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
-    on<LogoutEvent>(_onLogout);
 
-    print('inputs escuchando');
+    print('login bloc generado');
   }
 
   final LoginUseCase loginUsecase;
@@ -52,7 +51,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginSubmitted event,
     Emitter<LoginState> emit,
   ) async {
-    print(state.isValid);
     if (state.isValid) {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
@@ -69,26 +67,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }, (success) {
         emit(
           state.copyWith(
+            status: FormzSubmissionStatus.success,
             username: const Username.pure(),
             password: const Password.pure(),
-            status: FormzSubmissionStatus.success,
             isValid: false,
           ),
         );
       });
     }
-  }
-
-  void _onLogout(
-    LogoutEvent event,
-    Emitter<LoginState> emit,
-  ) {
-    print('logout event');
-    emit(
-      state.copyWith(
-        status: FormzSubmissionStatus.initial,
-        isValid: false,
-      ),
-    );
   }
 }
