@@ -17,42 +17,29 @@ final GetIt sl = GetIt.instance;
 Future<void> init(String env) async {
   //Datasources
   sl
-    ..registerSingleton<UserDatasource>(
-      UserDataSourceImpl(),
+    ..registerLazySingleton<UserDatasource>(
+      () => UserDataSourceImpl(),
     )
-    ..registerSingleton<AuthenticationDatasource>(
-      AuthenticationDatasourceImpl(),
+    ..registerLazySingleton<AuthenticationDatasource>(
+      () => AuthenticationDatasourceImpl(),
     )
 
     //repositories
-    ..registerSingleton<AuthenticationRepositoryImpl>(
-      AuthenticationRepositoryImpl(sl()),
+    ..registerLazySingleton<AuthenticationRepositoryImpl>(
+      () => AuthenticationRepositoryImpl(sl()),
     )
-    ..registerSingleton<UserRepositoryImpl>(
-      UserRepositoryImpl(sl()),
+    ..registerLazySingleton<UserRepositoryImpl>(
+      () => UserRepositoryImpl(sl()),
     )
 
     //usescases
-    ..registerSingleton(GetStatusUseCase(repository: sl()))
-    ..registerSingleton(DisposeAuthUseCase(repository: sl()))
-    ..registerSingleton(GetUserUseCase(repository: sl()))
-    ..registerSingleton(LoginUseCase(repository: sl()))
-    ..registerSingleton(LogoutUseCase(repository: sl()))
+    ..registerLazySingleton(() => GetStatusUseCase(repository: sl()))
+    ..registerLazySingleton(() => DisposeAuthUseCase(repository: sl()))
+    ..registerLazySingleton(() => GetUserUseCase(repository: sl()))
+    ..registerLazySingleton(() => LoginUseCase(repository: sl()))
+    ..registerLazySingleton(() => LogoutUseCase(repository: sl()))
 
     //blocs
-    ..registerLazySingleton(
-      () => AuthenticationBloc(
-        logoutUsecase: sl(),
-        getStatusUsecase: sl(),
-        getUserUsecase: sl(),
-        disposeAuthUseCase: sl(),
-      ),
-    )
-    ..registerLazySingleton(
-      () => LoginBloc(loginUsecase: sl()),
-    );
-
-  /*
     ..registerFactory<AuthenticationBloc>(
       () => AuthenticationBloc(
         logoutUsecase: sl(),
@@ -64,5 +51,4 @@ Future<void> init(String env) async {
     ..registerFactory<LoginBloc>(
       () => LoginBloc(loginUsecase: sl()),
     );
-    */
 }
