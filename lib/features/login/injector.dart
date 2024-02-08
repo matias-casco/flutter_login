@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter_login/features/login/data/datasource/datasources.dart';
 import 'package:flutter_login/features/login/data/repositories/authentication_repository_impl.dart';
 import 'package:flutter_login/features/login/data/repositories/user_repository_impl.dart';
+import 'package:flutter_login/features/login/domain/repositories/authentication_repository.dart';
+import 'package:flutter_login/features/login/domain/repositories/user_repository.dart';
 import 'package:flutter_login/features/login/domain/usecases/dispose_auth_usecase.dart';
 import 'package:flutter_login/features/login/domain/usecases/get_status_usecase.dart';
 import 'package:flutter_login/features/login/domain/usecases/get_user_usecase.dart';
@@ -23,12 +25,11 @@ Future<void> init(String env) async {
     ..registerLazySingleton<AuthenticationDatasource>(
       () => AuthenticationDatasourceImpl(),
     )
-
     //repositories
-    ..registerLazySingleton<AuthenticationRepositoryImpl>(
+    ..registerLazySingleton<AuthenticationRepository>(
       () => AuthenticationRepositoryImpl(sl()),
     )
-    ..registerLazySingleton<UserRepositoryImpl>(
+    ..registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(sl()),
     )
 
@@ -40,15 +41,15 @@ Future<void> init(String env) async {
     ..registerLazySingleton(() => LogoutUseCase(repository: sl()))
 
     //blocs
-    ..registerFactory<AuthenticationBloc>(
+    ..registerFactory(
+      () => LoginBloc(loginUsecase: sl()),
+    )
+    ..registerFactory(
       () => AuthenticationBloc(
         logoutUsecase: sl(),
         getStatusUsecase: sl(),
         getUserUsecase: sl(),
         disposeAuthUseCase: sl(),
       ),
-    )
-    ..registerFactory<LoginBloc>(
-      () => LoginBloc(loginUsecase: sl()),
     );
 }

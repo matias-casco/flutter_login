@@ -30,6 +30,7 @@ class AuthenticationDatasourceImpl implements AuthenticationDatasource {
     required String username,
     required String password,
   }) async {
+    //throw Exception('no valido');
     await Future.delayed(
       const Duration(milliseconds: 300),
       () {
