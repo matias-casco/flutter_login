@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/features/login/injector.dart';
 import 'package:flutter_login/features/login/login.dart';
 import 'package:flutter_login/features/login/presentation/bloc/authentication_bloc/authentication_bloc.dart';
 
