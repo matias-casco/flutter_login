@@ -21,16 +21,8 @@ class AuthenticationBloc
   }) : super(const AuthenticationState.unknown()) {
     on<_AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
     on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
-    getStatusUsecase(NoParams()).then((either) {
-      either.fold((failure) {
-        // manejar el error
-      }, (stream) {
-        _authenticationStatusSubscription = stream.listen(
-          (status) => add(_AuthenticationStatusChanged(status)),
-        );
-        print('auth bloc generado');
-      });
-    });
+    on<WatchAuthenticationStatus>(_onWatchAuthenticationStatus);
+    add(WatchAuthenticationStatus());
   }
 
   final GetStatusUseCase getStatusUsecase;
@@ -82,5 +74,22 @@ class AuthenticationBloc
     });
 
     return false;
+  }
+
+  Future<bool> _onWatchAuthenticationStatus(
+    WatchAuthenticationStatus event,
+    Emitter<AuthenticationState> emit,
+  ) async {
+    await getStatusUsecase(NoParams()).then((either) {
+      either.fold((failure) {
+        // manejar el error
+      }, (stream) {
+        _authenticationStatusSubscription = stream.listen(
+          (status) => add(_AuthenticationStatusChanged(status)),
+        );
+      });
+    });
+    print('escuchando auth status');
+    return true;
   }
 }
