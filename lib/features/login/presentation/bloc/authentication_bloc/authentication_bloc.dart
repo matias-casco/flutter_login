@@ -57,11 +57,16 @@ class AuthenticationBloc
     }
   }
 
-  void _onAuthenticationLogoutRequested(
+  Future<void> _onAuthenticationLogoutRequested(
     AuthenticationLogoutRequested event,
     Emitter<AuthenticationState> emit,
-  ) {
-    logoutUsecase(NoParams());
+  ) async {
+    final result = await logoutUsecase(NoParams());
+    result.fold((error) {
+      emit(state.copyWith(message: error.message));
+    }, (r) {
+      emit(state.copyWith(message: ''));
+    });
   }
 
   Future<bool> onDisposeAuth() async {

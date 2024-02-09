@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/features/login/injector.dart';
 import 'package:flutter_login/features/login/presentation/bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
@@ -9,42 +8,31 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: const LoginForm(),
+        padding: EdgeInsets.all(12),
+        child: _LoginForm(),
       ),
     );
   }
 }
 
-class LoginForm extends StatelessWidget {
-  const LoginForm({super.key});
+class _LoginForm extends StatelessWidget {
+  const _LoginForm();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
-        if (state.status.isFailure) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-        }
-      },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _UsernameInput(),
-            const Padding(padding: EdgeInsets.all(12)),
-            _PasswordInput(),
-            const Padding(padding: EdgeInsets.all(12)),
-            _LoginButton(),
-          ],
-        ),
+    return Align(
+      alignment: const Alignment(0, -1 / 3),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _UsernameInput(),
+          const Padding(padding: EdgeInsets.all(12)),
+          _PasswordInput(),
+          const Padding(padding: EdgeInsets.all(12)),
+          _LoginButton(),
+        ],
       ),
     );
   }

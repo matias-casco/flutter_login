@@ -4,6 +4,7 @@ class AuthenticationState extends Equatable {
   const AuthenticationState._({
     this.status = AuthenticationStatus.unknown,
     this.user = UserEntity.empty,
+    this.message = '',
   });
 
   const AuthenticationState.unknown() : this._();
@@ -16,7 +17,20 @@ class AuthenticationState extends Equatable {
 
   final AuthenticationStatus status;
   final UserEntity user;
+  final String message;
+
+  AuthenticationState copyWith({
+    AuthenticationStatus? status,
+    UserEntity? user,
+    String? message,
+  }) {
+    return AuthenticationState._(
+      status: status ?? this.status,
+      user: user ?? this.user,
+      message: message ?? this.message,
+    );
+  }
 
   @override
-  List<Object> get props => [status, user];
+  List<Object> get props => [status, user, message];
 }

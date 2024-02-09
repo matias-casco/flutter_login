@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_login/features/login/login.dart';
 import 'package:flutter_login/features/login/presentation/views/home_view.dart';
 
 class HomePage extends StatelessWidget {
@@ -10,6 +12,17 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const HomeView();
+    return BlocListener<AuthenticationBloc, AuthenticationState>(
+      listener: (context, state) {
+        if (state.message.isNotEmpty) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+        }
+      },
+      child: const HomeView(),
+    );
   }
 }

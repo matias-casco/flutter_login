@@ -44,6 +44,8 @@ class AuthenticationDatasourceImpl implements AuthenticationDatasource {
 
   @override
   void logOut() {
+    //* Testear manejo de error
+    //throw Exception('Error desde logout datasource');
     if (!_controller.isClosed) {
       _controller.add(AuthenticationStatus.unauthenticated);
     }

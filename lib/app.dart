@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/features/login/data/datasource/datasources.dart';
-import 'package:flutter_login/features/login/data/repositories/authentication_repository_impl.dart';
-import 'package:flutter_login/features/login/data/repositories/user_repository_impl.dart';
-import 'package:flutter_login/features/login/domain/authentication_status.dart';
 import 'package:flutter_login/features/login/injector.dart';
 import 'package:flutter_login/features/login/login.dart';
 
@@ -23,7 +19,6 @@ class _AppState extends State<App> {
   @override
   void dispose() {
     sl<AuthenticationBloc>().onDisposeAuth();
-    print('disposed desde app');
     super.dispose();
   }
 

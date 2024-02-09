@@ -15,7 +15,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final response = authenticationDatasource.status;
       return Right(response);
     } catch (e) {
-      print(e.toString());
       return Left(
         ServerFailure(
           message: e.toString(),
@@ -56,7 +55,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } catch (e) {
       return Left(
         ServerFailure(
-          message: 'Error logging out.',
+          message: e.toString(),
           code: 500,
           status: 500,
         ),

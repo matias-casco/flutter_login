@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_login/features/login/presentation/bloc/bloc.dart';
 import 'package:flutter_login/features/login/presentation/views/login_view.dart';
+import 'package:formz/formz.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -10,6 +13,17 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LoginView();
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.status.isFailure) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+        }
+      },
+      child: const LoginView(),
+    );
   }
 }
