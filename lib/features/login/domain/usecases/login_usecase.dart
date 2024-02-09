@@ -13,10 +13,11 @@ class LoginUseCase extends UseCase<Future<void>, User> {
   Future<Either<Failure, Future<void>>> call(
     User params,
   ) async {
-    final result = repository.logIn(
+    final result = await repository.logIn(
       username: params.username,
       password: params.password,
     );
+
     return result;
   }
 }

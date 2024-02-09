@@ -15,9 +15,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final response = authenticationDatasource.status;
       return Right(response);
     } catch (e) {
+      print(e.toString());
       return Left(
         ServerFailure(
-          message: 'Error getting status.',
+          message: e.toString(),
           code: 500,
           status: 500,
         ),
@@ -26,20 +27,20 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Either<Failure, Future<void>> logIn({
+  Future<Either<Failure, Future<void>>> logIn({
     required String username,
     required String password,
-  }) {
+  }) async {
     try {
-      final response = authenticationDatasource.logIn(
+      await authenticationDatasource.logIn(
         username: username,
         password: password,
       );
-      return Right(response);
+      return Right(Future.value());
     } catch (e) {
       return Left(
         ServerFailure(
-          message: 'Error logging in.',
+          message: e.toString(),
           code: 500,
           status: 500,
         ),

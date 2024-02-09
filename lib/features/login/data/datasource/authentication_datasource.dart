@@ -30,10 +30,11 @@ class AuthenticationDatasourceImpl implements AuthenticationDatasource {
     required String username,
     required String password,
   }) async {
-    await Future.delayed(
+    //* Testear manejo de error
+    //throw Exception('error de login desde datasource');
+    return Future.delayed(
       const Duration(milliseconds: 300),
       () {
-        // Verificar si el controlador ha sido cerrado antes de enviar un evento
         if (!_controller.isClosed) {
           _controller.add(AuthenticationStatus.authenticated);
         }

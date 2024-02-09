@@ -5,7 +5,7 @@ import 'package:flutter_login/features/login/domain/authentication_status.dart';
 abstract class AuthenticationRepository {
   Future<Either<Failure, Stream<AuthenticationStatus>>> getStatus();
 
-  Either<Failure, Future<void>> logIn({
+  Future<Either<Failure, Future<void>>> logIn({
     required String username,
     required String password,
   });
